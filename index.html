@@ -9,7 +9,7 @@
 
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
         <!-- Place favicon.ico in the root directory -->
-        
+
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css">
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
@@ -19,9 +19,15 @@
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <div class="wrapper">
-            <div class="gameboard">
-                <div class="ball"></div>
+        <div data-role="page" data-theme="b">
+            <div class="mainwrapper">
+                <div class="centeredwrapper">
+                    <div class="gameboard rotatable">
+                    </div>            
+                    <div class="gameboard no-border">
+                        <div class="ball"></div>
+                    </div>
+                </div>
             </div>
         </div>
 
