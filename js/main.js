@@ -14,13 +14,14 @@ function screenSetup() {
         "height": boardSize * 2
     });
     $(".gameboard.rotatable").css({
+        "margin-top": ((boardSize + borderWidth) * -2),
         "border-top-color": colors[0],
         "border-right-color": colors[1],
         "border-bottom-color": colors[2],
         "border-left-color": colors[3]
     });
     $(".gameboard.no-border").css({
-        "margin-top": ((boardSize + borderWidth) * -2)
+        "border-color": "#252525"
     });
     setBallColor();
 }
