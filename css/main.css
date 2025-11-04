@@ -176,6 +176,172 @@ textarea {
     /*border: 1px solid chartreuse;*/
 }
 
+/* Game Stats */
+.game-stats {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    z-index: 100;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.score-container, .lives-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.label {
+    font-size: 18px;
+    opacity: 0.9;
+}
+
+/* Countdown Overlay */
+.countdown-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.countdown-number {
+    font-size: 120px;
+    font-weight: bold;
+    color: white;
+    font-family: Arial, sans-serif;
+    animation: countdown-pulse 1s ease-in-out;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+}
+
+@keyframes countdown-pulse {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Timer Display */
+.timer-display {
+    position: absolute;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 300px;
+    z-index: 100;
+}
+
+.timer-bar-container {
+    width: 100%;
+    height: 20px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.timer-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #00c71d 0%, #ffd500 50%, #ff0000 100%);
+    transition: width 0.1s linear;
+    border-radius: 8px;
+}
+
+.timer-text {
+    text-align: center;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 5px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* Game Over Screen */
+.game-over {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.game-over-content {
+    text-align: center;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.game-over-content h1 {
+    font-size: 72px;
+    margin-bottom: 30px;
+    color: #ff0000;
+    text-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+    animation: game-over-pulse 1s ease-in-out infinite;
+}
+
+@keyframes game-over-pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.final-score {
+    font-size: 32px;
+    margin-bottom: 40px;
+    color: #ffd500;
+}
+
+.restart-btn {
+    font-size: 24px;
+    padding: 15px 40px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.restart-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+}
+
+.restart-btn:active {
+    transform: translateY(0);
+}
+
 
 /* ==========================================================================
    Helper classes
