@@ -1,5 +1,29 @@
+// Game State Variables
+var gameState = {
+    score: 0,
+    lives: 3,
+    timeLimit: 2.0,
+    currentTimeLeft: 2.0,
+    baseTimeLimit: 2.0,
+    timeDecreaseRate: 0.05, // Decrease 50ms per successful swipe
+    minTimeLimit: 0.5, // Minimum time limit
+    gameStarted: false,
+    timerInterval: null,
+    animationInProgress: false
+};
+
+// Ball and board variables
+var ballSize = 40;
+var screenWidth = $(window).width();
+var screenHeight = $(window).height();
+var boardSize = Math.floor(Math.min(screenHeight, screenWidth) / 3);
+var borderWidth = 30;
+var colors = ["rgb(234, 6, 0)", "rgb(54, 18, 161)", "rgb(255, 213, 0)", "rgb(0, 199, 13)"];
+var blockEvents = false;
+
 $(function () {
     screenSetup();
+    startCountdown();
 
     // Add resize handler for responsive behavior
     var resizeTimer;
@@ -11,14 +35,13 @@ $(function () {
             }
         }, 250);
     });
+
+    // Restart button handler
+    $('#restart-btn').on('click', function() {
+        restartGame();
+    });
 });
-var ballSize = 40;
-var screenWidth = $(window).width();
-var screenHeight = $(window).height();
-var boardSize = Math.floor(Math.min(screenHeight, screenWidth) / 3);
-var borderWidth = 30;
-var colors = ["rgb(234, 6, 0)", "rgb(54, 18, 161)", "rgb(255, 213, 0)", "rgb(0, 199, 13)"];
-var blockEvents = false;
+
 function screenSetup() {
     // Recalculate dimensions based on current window size
     screenWidth = $(window).width();
@@ -45,6 +68,153 @@ function screenSetup() {
         $(".ball").css("background-color") === "transparent") {
         setBallColor();
     }
+}
+
+function startCountdown() {
+    var count = 3;
+    $('#countdown-number').text(count);
+
+    var countdownInterval = setInterval(function() {
+        count--;
+        if (count > 0) {
+            $('#countdown-number').text(count);
+            // Restart animation
+            $('#countdown-number').css('animation', 'none');
+            setTimeout(function() {
+                $('#countdown-number').css('animation', 'countdown-pulse 1s ease-in-out');
+            }, 10);
+        } else if (count === 0) {
+            $('#countdown-number').text('GO!');
+            $('#countdown-number').css('animation', 'none');
+            setTimeout(function() {
+                $('#countdown-number').css('animation', 'countdown-pulse 1s ease-in-out');
+            }, 10);
+        } else {
+            clearInterval(countdownInterval);
+            $('#countdown-overlay').fadeOut(300, function() {
+                startGame();
+            });
+        }
+    }, 1000);
+}
+
+function startGame() {
+    gameState.gameStarted = true;
+    gameState.score = 0;
+    gameState.lives = 3;
+    gameState.timeLimit = gameState.baseTimeLimit;
+    updateScore();
+    updateLives();
+    $('#timer-display').removeClass('hidden');
+    startTimer();
+}
+
+function startTimer() {
+    gameState.currentTimeLeft = gameState.timeLimit;
+    updateTimerDisplay();
+
+    if (gameState.timerInterval) {
+        clearInterval(gameState.timerInterval);
+    }
+
+    gameState.timerInterval = setInterval(function() {
+        gameState.currentTimeLeft -= 0.01; // Decrease by 10ms
+
+        if (gameState.currentTimeLeft <= 0) {
+            gameState.currentTimeLeft = 0;
+            updateTimerDisplay();
+            clearInterval(gameState.timerInterval);
+            loseLife();
+        } else {
+            updateTimerDisplay();
+        }
+    }, 10);
+}
+
+function updateTimerDisplay() {
+    var percentage = (gameState.currentTimeLeft / gameState.timeLimit) * 100;
+    $('#timer-bar').css('width', percentage + '%');
+    $('#timer-text').text(gameState.currentTimeLeft.toFixed(2) + 's');
+}
+
+function updateScore() {
+    $('#score').text(gameState.score);
+}
+
+function updateLives() {
+    var livesText = '';
+    for (var i = 0; i < gameState.lives; i++) {
+        livesText += '❤';
+    }
+    for (var j = gameState.lives; j < 3; j++) {
+        livesText += '🖤';
+    }
+    $('#lives').html(livesText);
+}
+
+function loseLife() {
+    gameState.lives--;
+    updateLives();
+
+    if (gameState.lives <= 0) {
+        gameOver();
+    } else {
+        // Flash the screen to indicate lost life
+        $('body').css('background-color', '#ff0000');
+        setTimeout(function() {
+            $('body').css('background-color', 'black');
+        }, 200);
+
+        // Reset timer and continue
+        setTimeout(function() {
+            if (!gameState.animationInProgress) {
+                startTimer();
+            }
+        }, 500);
+    }
+}
+
+function gameOver() {
+    gameState.gameStarted = false;
+    clearInterval(gameState.timerInterval);
+    blockEvents = true;
+
+    $('#final-score').text(gameState.score);
+    $('#game-over').removeClass('hidden').hide().fadeIn(500);
+}
+
+function restartGame() {
+    // Reset game state
+    gameState.score = 0;
+    gameState.lives = 3;
+    gameState.timeLimit = gameState.baseTimeLimit;
+    gameState.currentTimeLeft = gameState.baseTimeLimit;
+    gameState.gameStarted = false;
+    gameState.animationInProgress = false;
+    blockEvents = false;
+
+    // Clear any existing timers
+    if (gameState.timerInterval) {
+        clearInterval(gameState.timerInterval);
+    }
+
+    // Hide game over screen
+    $('#game-over').fadeOut(300);
+
+    // Reset ball and board
+    resetBall();
+    setBallColor();
+    colors = ["rgb(234, 6, 0)", "rgb(54, 18, 161)", "rgb(255, 213, 0)", "rgb(0, 199, 13)"];
+    screenSetup();
+
+    // Hide timer temporarily
+    $('#timer-display').addClass('hidden');
+
+    // Start countdown again
+    setTimeout(function() {
+        $('#countdown-overlay').show();
+        startCountdown();
+    }, 500);
 }
 
 function setBallColor() {
@@ -85,8 +255,29 @@ function resetBall() {
     });
 }
 
+function onSuccessfulSwipe() {
+    // Stop the current timer
+    clearInterval(gameState.timerInterval);
+
+    // Increase score
+    gameState.score += 10;
+    updateScore();
+
+    // Decrease time limit for next round (make it harder)
+    gameState.timeLimit = Math.max(
+        gameState.minTimeLimit,
+        gameState.timeLimit - gameState.timeDecreaseRate
+    );
+
+    // Don't start timer yet, wait for animation to complete
+}
+
 function animBall(dir) {
+    if (!gameState.gameStarted) return;
+
     blockEvents = true;
+    gameState.animationInProgress = true;
+
     $('.ball').stop(true, true);//stops animation in progress
     resetBall();
     var animobject = {};
@@ -96,11 +287,15 @@ function animBall(dir) {
     var duration = 200;
     var lastStep = 3;
     var ballColor = $(".ball").css("background-color");
+    var isCorrectMatch = false;
+
     switch (dir) {
         case "l":
         {
             if(ballColor !== colors[3]){
                 lastStep = 2;
+            } else {
+                isCorrectMatch = true;
             }
             animobject = [{
                     "margin-left": "-=" + distance,
@@ -125,7 +320,9 @@ function animBall(dir) {
         {
             if(ballColor !== colors[0]){
                 lastStep = 2;
-            }            
+            } else {
+                isCorrectMatch = true;
+            }
             animobject = [{
                     "margin-top": "-=" + distance,
                     "height": "+=" + stretch,
@@ -146,7 +343,9 @@ function animBall(dir) {
         {
             if(ballColor !== colors[1]){
                 lastStep = 2;
-            }              
+            } else {
+                isCorrectMatch = true;
+            }
             animobject = [{
                     "margin-left": "+=" + distance,
                     "height": "-=" + stretch,
@@ -171,7 +370,9 @@ function animBall(dir) {
         {
             if(ballColor !== colors[2]){
                 lastStep = 2;
-            }                   
+            } else {
+                isCorrectMatch = true;
+            }
             animobject = [{
                     "margin-top": "+=" + distance,
                     "height": "+=" + stretch,
@@ -190,11 +391,7 @@ function animBall(dir) {
             break;
         }
     }
-    //apparently small animation step might help with mobile performance
-//    var smallanim = $.extend({}, animobject[1]);
-//    for (var a in smallanim) {
-//        smallanim[a] = smallanim[a].substring(0, 2) + 1;
-//    }
+
     $(".ball")
             .animate(animobject[0], Math.floor(distance * duration / (distance * 2)), "linear")
             .animate(animobject[1], Math.floor((distance - (stretch * 2)) * duration / (distance * 2)), "linear")
@@ -203,34 +400,46 @@ function animBall(dir) {
         resetBall();
         setBallColor();
         rotateBoard();
+
+        if (isCorrectMatch) {
+            onSuccessfulSwipe();
+        }
+
+        gameState.animationInProgress = false;
         blockEvents = false;
+
+        // Start new timer after animation completes
+        if (gameState.gameStarted && gameState.lives > 0) {
+            startTimer();
+        }
     });
 }
+
+// Swipe event handlers
 $(window).on("swipeleft", function () {
-    if (blockEvents)
+    if (blockEvents || !gameState.gameStarted)
         return;
     animBall("l");
 });
 $(window).on("swiperight", function () {
-    if (blockEvents)
+    if (blockEvents || !gameState.gameStarted)
         return;
     animBall("r");
 });
 $(window).on("swipedown", function () {
-    if (blockEvents)
+    if (blockEvents || !gameState.gameStarted)
         return;
     animBall("b");
 });
 $(window).on("swipeup", function () {
-    if (blockEvents)
+    if (blockEvents || !gameState.gameStarted)
         return;
     animBall("t");
 });
 
-
-
+// Keyboard event handlers
 $(document).keydown(function (e) {
-    if (blockEvents)
+    if (blockEvents || !gameState.gameStarted)
         return;
     switch (e.which) {
         case 37:
@@ -254,4 +463,3 @@ $(document).keydown(function (e) {
     }
     e.preventDefault(); // prevent the default action (scroll / move caret)
 });
-

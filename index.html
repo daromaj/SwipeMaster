@@ -22,11 +22,45 @@
         <div data-role="page" data-theme="b">
             <div class="mainwrapper">
                 <div class="centeredwrapper">
+                    <!-- Game Stats -->
+                    <div class="game-stats">
+                        <div class="score-container">
+                            <span class="label">Score:</span>
+                            <span id="score">0</span>
+                        </div>
+                        <div class="lives-container">
+                            <span class="label">Lives:</span>
+                            <span id="lives">❤❤❤</span>
+                        </div>
+                    </div>
+
+                    <!-- Countdown Overlay -->
+                    <div id="countdown-overlay" class="countdown-overlay">
+                        <div id="countdown-number" class="countdown-number">3</div>
+                    </div>
+
+                    <!-- Timer Display -->
+                    <div id="timer-display" class="timer-display hidden">
+                        <div class="timer-bar-container">
+                            <div id="timer-bar" class="timer-bar"></div>
+                        </div>
+                        <div id="timer-text" class="timer-text">2.0</div>
+                    </div>
+
                     <div class="gameboard no-border">
                         <div class="ball"></div>
                     </div>
                     <div class="gameboard rotatable">
-                    </div>                                
+                    </div>
+
+                    <!-- Game Over Screen -->
+                    <div id="game-over" class="game-over hidden">
+                        <div class="game-over-content">
+                            <h1>GAME OVER</h1>
+                            <p class="final-score">Final Score: <span id="final-score">0</span></p>
+                            <button id="restart-btn" class="restart-btn">Play Again</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
