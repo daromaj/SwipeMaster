@@ -19,6 +19,13 @@ html {
     font-size: 1em;
     /* line-height: 0; */
     background-color: black;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    height: 100%;
+    overflow: hidden;
 }
 
 /*
@@ -101,21 +108,23 @@ textarea {
    ========================================================================== */
 
 .mainwrapper{
-    width:  100%;
+    width: 100%;
     height: 100%;
-    position: absolute;
-    /* display: inline-block; */
-    margin: 20px 0px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
 .centeredwrapper{
-    margin: 0px auto;
     position: relative;
-    /* display: table; */
-    /* width: 100%; */
-    /* height: 100%; */
-    /* left: 50%; */
-    /* position: absolute; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .wrapper{
