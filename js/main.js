@@ -1,5 +1,16 @@
 $(function () {
     screenSetup();
+
+    // Add resize handler for responsive behavior
+    var resizeTimer;
+    $(window).on('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            if (!blockEvents) {
+                screenSetup();
+            }
+        }, 250);
+    });
 });
 var ballSize = 40;
 var screenWidth = $(window).width();
@@ -9,6 +20,11 @@ var borderWidth = 30;
 var colors = ["rgb(234, 6, 0)", "rgb(54, 18, 161)", "rgb(255, 213, 0)", "rgb(0, 199, 13)"];
 var blockEvents = false;
 function screenSetup() {
+    // Recalculate dimensions based on current window size
+    screenWidth = $(window).width();
+    screenHeight = $(window).height();
+    boardSize = Math.floor(Math.min(screenHeight, screenWidth) / 3);
+
     $(".gameboard").css({
         "width": boardSize * 2,
         "height": boardSize * 2
@@ -23,7 +39,12 @@ function screenSetup() {
     $(".gameboard.no-border").css({
         "border-color": "#252525"
     });
-    setBallColor();
+
+    // Only set ball color on initial setup, not on resize
+    if ($(".ball").css("background-color") === "rgba(0, 0, 0, 0)" ||
+        $(".ball").css("background-color") === "transparent") {
+        setBallColor();
+    }
 }
 
 function setBallColor() {
