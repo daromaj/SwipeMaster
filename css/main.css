@@ -15,10 +15,10 @@
    ========================================================================== */
 
 html {
-    color: #222;
+    color: #fff;
     font-size: 1em;
     /* line-height: 0; */
-    background-color: black;
+    background: radial-gradient(ellipse at center, #0a0a0f 0%, #000000 100%);
     height: 100%;
     overflow: hidden;
 }
@@ -26,6 +26,7 @@ html {
 body {
     height: 100%;
     overflow: hidden;
+    background: radial-gradient(ellipse at center, #0a0a0f 0%, #000000 100%);
 }
 
 /*
@@ -151,6 +152,8 @@ textarea {
     border-width: 30px;
     border-style: solid;
     background: transparent;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
 }
 
 .no-border {
@@ -174,6 +177,8 @@ textarea {
     top: 50%;
     margin-top: -20px;
     /*border: 1px solid chartreuse;*/
+    box-shadow: 0 0 30px currentColor, 0 0 60px currentColor, 0 0 90px currentColor;
+    transition: all 0.3s ease;
 }
 
 /* Game Stats */
@@ -184,23 +189,31 @@ textarea {
     right: 0;
     display: flex;
     justify-content: space-around;
-    color: white;
-    font-family: Arial, sans-serif;
+    color: #00ffff;
+    font-family: 'Arial', sans-serif;
     font-size: 24px;
     font-weight: bold;
     z-index: 100;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff, 0 0 40px #00ffff;
+    transition: all 0.3s ease;
 }
 
 .score-container, .lives-container {
     display: flex;
     align-items: center;
     gap: 10px;
+    transition: transform 0.3s ease;
+}
+
+.score-container:hover, .lives-container:hover {
+    transform: scale(1.05);
 }
 
 .label {
     font-size: 18px;
     opacity: 0.9;
+    color: #ff00ff;
+    text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
 }
 
 /* Countdown Overlay */
@@ -210,33 +223,37 @@ textarea {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
+    background: radial-gradient(ellipse at center, rgba(20, 0, 40, 0.95) 0%, rgba(0, 0, 0, 0.98) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    backdrop-filter: blur(10px);
 }
 
 .countdown-number {
     font-size: 120px;
     font-weight: bold;
-    color: white;
-    font-family: Arial, sans-serif;
+    color: #00ffff;
+    font-family: 'Arial', sans-serif;
     animation: countdown-pulse 1s ease-in-out;
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+    text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff, 0 0 60px #00ffff, 0 0 80px #00ffff, 0 0 100px #00ffff;
 }
 
 @keyframes countdown-pulse {
     0% {
-        transform: scale(0.5);
+        transform: scale(0.5) rotate(-5deg);
         opacity: 0;
+        text-shadow: 0 0 20px #00ffff;
     }
     50% {
-        transform: scale(1.2);
+        transform: scale(1.2) rotate(5deg);
+        text-shadow: 0 0 40px #00ffff, 0 0 80px #00ffff, 0 0 120px #00ffff;
     }
     100% {
-        transform: scale(1);
+        transform: scale(1) rotate(0deg);
         opacity: 1;
+        text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff, 0 0 60px #00ffff, 0 0 80px #00ffff;
     }
 }
 
@@ -249,32 +266,37 @@ textarea {
     width: 80%;
     max-width: 300px;
     z-index: 100;
+    transition: all 0.3s ease;
 }
 
 .timer-bar-container {
     width: 100%;
     height: 20px;
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(0, 0, 0, 0.6);
     border-radius: 10px;
     overflow: hidden;
-    border: 2px solid rgba(255, 255, 255, 0.4);
+    border: 2px solid #00ffff;
+    box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, inset 0 0 10px rgba(0, 255, 255, 0.2);
+    transition: all 0.3s ease;
 }
 
 .timer-bar {
     height: 100%;
-    background: linear-gradient(90deg, #00c71d 0%, #ffd500 50%, #ff0000 100%);
+    background: linear-gradient(90deg, #00ff00 0%, #ffff00 50%, #ff00ff 75%, #ff0000 100%);
     transition: width 0.1s linear;
     border-radius: 8px;
+    box-shadow: 0 0 20px currentColor, inset 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 .timer-text {
     text-align: center;
-    color: white;
-    font-family: Arial, sans-serif;
+    color: #00ffff;
+    font-family: 'Arial', sans-serif;
     font-size: 18px;
     font-weight: bold;
     margin-top: 5px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+    transition: all 0.3s ease;
 }
 
 /* Game Over Screen */
@@ -284,62 +306,69 @@ textarea {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.95);
+    background: radial-gradient(ellipse at center, rgba(40, 0, 40, 0.98) 0%, rgba(0, 0, 0, 0.98) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    backdrop-filter: blur(10px);
 }
 
 .game-over-content {
     text-align: center;
     color: white;
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
 }
 
 .game-over-content h1 {
     font-size: 72px;
     margin-bottom: 30px;
-    color: #ff0000;
-    text-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
-    animation: game-over-pulse 1s ease-in-out infinite;
+    color: #ff00ff;
+    text-shadow: 0 0 20px #ff00ff, 0 0 40px #ff00ff, 0 0 60px #ff00ff, 0 0 80px #ff00ff, 0 0 100px #ff00ff;
+    animation: game-over-pulse 1.5s ease-in-out infinite;
 }
 
 @keyframes game-over-pulse {
     0%, 100% {
         transform: scale(1);
+        text-shadow: 0 0 20px #ff00ff, 0 0 40px #ff00ff, 0 0 60px #ff00ff;
     }
     50% {
         transform: scale(1.05);
+        text-shadow: 0 0 30px #ff00ff, 0 0 60px #ff00ff, 0 0 90px #ff00ff, 0 0 120px #ff00ff;
     }
 }
 
 .final-score {
     font-size: 32px;
     margin-bottom: 40px;
-    color: #ffd500;
+    color: #00ffff;
+    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
 }
 
 .restart-btn {
     font-size: 24px;
     padding: 15px 40px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);
     color: white;
-    border: none;
+    border: 2px solid #00ffff;
     border-radius: 50px;
     cursor: pointer;
     font-weight: bold;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 20px #00ffff, 0 0 40px rgba(0, 255, 255, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
 }
 
 .restart-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 0 30px #00ffff, 0 0 60px rgba(0, 255, 255, 0.8), inset 0 0 30px rgba(255, 255, 255, 0.3);
+    border-color: #ff00ff;
 }
 
 .restart-btn:active {
-    transform: translateY(0);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 0 15px #00ffff, 0 0 30px rgba(0, 255, 255, 0.5);
 }
 
 
