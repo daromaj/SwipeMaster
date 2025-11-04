@@ -18,7 +18,7 @@ var screenWidth = $(window).width();
 var screenHeight = $(window).height();
 var boardSize = Math.floor(Math.min(screenHeight, screenWidth) / 3);
 var borderWidth = 30;
-var colors = ["rgb(234, 6, 0)", "rgb(54, 18, 161)", "rgb(255, 213, 0)", "rgb(0, 199, 13)"];
+var colors = ["#00ffff", "#ff00ff", "#ffff00", "#00ff00"]; // Neon cyan, magenta, yellow, green
 var blockEvents = false;
 
 $(function () {
@@ -159,10 +159,10 @@ function loseLife() {
     if (gameState.lives <= 0) {
         gameOver();
     } else {
-        // Flash the screen to indicate lost life
-        $('body').css('background-color', '#ff0000');
+        // Flash the screen to indicate lost life with neon red effect
+        $('body').css('background', 'radial-gradient(ellipse at center, rgba(255, 0, 100, 0.8) 0%, rgba(255, 0, 0, 0.3) 100%)');
         setTimeout(function() {
-            $('body').css('background-color', 'black');
+            $('body').css('background', 'radial-gradient(ellipse at center, #0a0a0f 0%, #000000 100%)');
         }, 200);
 
         // Reset timer and continue
@@ -204,7 +204,7 @@ function restartGame() {
     // Reset ball and board
     resetBall();
     setBallColor();
-    colors = ["rgb(234, 6, 0)", "rgb(54, 18, 161)", "rgb(255, 213, 0)", "rgb(0, 199, 13)"];
+    colors = ["#00ffff", "#ff00ff", "#ffff00", "#00ff00"]; // Neon cyan, magenta, yellow, green
     screenSetup();
 
     // Hide timer temporarily
