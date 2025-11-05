@@ -20,31 +20,33 @@
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
         <div data-role="page" data-theme="b">
-            <div class="mainwrapper">
-                <div class="centeredwrapper">
-                    <!-- Game Stats -->
-                    <div class="game-stats">
-                        <div class="score-container">
-                            <span class="label">Score:</span>
-                            <span id="score">0</span>
-                        </div>
-                        <div class="lives-container">
-                            <span class="label">Lives:</span>
-                            <span id="lives">❤❤❤</span>
+            <!-- Game Header -->
+            <div class="game-header">
+                <div class="header-content">
+                    <div class="score-container">
+                        <span class="label">Score:</span>
+                        <span id="score">0</span>
+                    </div>
+                    <div class="timer-container">
+                        <div id="timer-display" class="timer-display hidden">
+                            <div class="timer-bar-container">
+                                <div id="timer-bar" class="timer-bar"></div>
+                            </div>
+                            <div id="timer-text" class="timer-text">2.0s</div>
                         </div>
                     </div>
+                    <div class="lives-container">
+                        <span class="label">Lives:</span>
+                        <span id="lives">❤❤❤</span>
+                    </div>
+                </div>
+            </div>
 
+            <div class="mainwrapper">
+                <div class="centeredwrapper">
                     <!-- Countdown Overlay -->
                     <div id="countdown-overlay" class="countdown-overlay">
                         <div id="countdown-number" class="countdown-number">3</div>
-                    </div>
-
-                    <!-- Timer Display -->
-                    <div id="timer-display" class="timer-display hidden">
-                        <div class="timer-bar-container">
-                            <div id="timer-bar" class="timer-bar"></div>
-                        </div>
-                        <div id="timer-text" class="timer-text">2.0</div>
                     </div>
 
                     <div class="gameboard no-border">

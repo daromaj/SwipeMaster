@@ -272,6 +272,19 @@ function onSuccessfulSwipe() {
     // Don't start timer yet, wait for animation to complete
 }
 
+// Helper function to convert RGB to Hex
+function rgbToHex(rgb) {
+    // rgb is a string like "rgb(0, 255, 255)"
+    var result = rgb.match(/\d+/g);
+    if (result && result.length >= 3) {
+        var r = parseInt(result[0]);
+        var g = parseInt(result[1]);
+        var b = parseInt(result[2]);
+        return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
+    return rgb;
+}
+
 function animBall(dir) {
     if (!gameState.gameStarted) return;
 
@@ -284,9 +297,9 @@ function animBall(dir) {
     var prop = 4;
     var stretch = Math.floor(ballSize / prop);
     var distance = Math.floor(boardSize / 2) - stretch;
-    var duration = 200;
+    var duration = 400; // Increased from 200 to 400 for better visibility
     var lastStep = 3;
-    var ballColor = $(".ball").css("background-color");
+    var ballColor = rgbToHex($(".ball").css("background-color"));
     var isCorrectMatch = false;
 
     switch (dir) {
@@ -397,21 +410,24 @@ function animBall(dir) {
             .animate(animobject[1], Math.floor((distance - (stretch * 2)) * duration / (distance * 2)), "linear")
             .animate(animobject[lastStep], Math.floor((stretch * 8) * duration / (distance * 2)), "linear")
             .promise().done(function () {
-        resetBall();
-        setBallColor();
-        rotateBoard();
+        // Add a small delay to show the ball hitting the wall
+        setTimeout(function() {
+            resetBall();
+            setBallColor();
+            rotateBoard();
 
-        if (isCorrectMatch) {
-            onSuccessfulSwipe();
-        }
+            if (isCorrectMatch) {
+                onSuccessfulSwipe();
+            }
 
-        gameState.animationInProgress = false;
-        blockEvents = false;
+            gameState.animationInProgress = false;
+            blockEvents = false;
 
-        // Start new timer after animation completes
-        if (gameState.gameStarted && gameState.lives > 0) {
-            startTimer();
-        }
+            // Start new timer after animation completes
+            if (gameState.gameStarted && gameState.lives > 0) {
+                startTimer();
+            }
+        }, 150); // 150ms delay to show ball at wall
     });
 }
 
