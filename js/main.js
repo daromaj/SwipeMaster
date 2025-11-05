@@ -342,14 +342,24 @@ function animBall(dir) {
     var animobject = {};
     var prop = 4;
     var stretch = Math.floor(ballSize / prop);
-    var distance = Math.floor(boardSize / 2) - stretch;
+
+    // Calculate distance dynamically based on actual rendered container size
+    // This ensures the ball travels correctly on any screen size
+    var $container = $(".gameboard.no-border");
+    var containerWidth = $container.width();
+    var containerHeight = $container.height();
+
+    // Distance from center to wall edge, accounting for ball radius
+    // Divided by 2 because animation has two movement steps
+    var distance = Math.floor((containerWidth - ballSize) / 4);
+
     var duration = 150; // Fast, snappy animation for rapid gameplay
     var lastStep = 3;
     var ballColor = rgbToHex($(".ball").css("background-color"));
     var isCorrectMatch = false;
 
     switch (dir) {
-        case "l":
+        case "l": // LEFT - Swipe left
         {
             if(ballColor !== colors[3]){
                 lastStep = 2;
@@ -357,17 +367,21 @@ function animBall(dir) {
                 isCorrectMatch = true;
             }
             animobject = [{
+                    // Step 0: Start moving left + horizontal stretch (oval shape)
                     "margin-left": "-=" + distance,
-                    "height": "-=" + stretch,
-                    "width": "+=" + stretch,
-                    "margin-top": "+=" + Math.floor(stretch / 2)
+                    "height": "-=" + stretch,        // Thinner vertically
+                    "width": "+=" + stretch,          // Wider horizontally
+                    "margin-top": "+=" + Math.floor(stretch / 2)  // Keep centered
                 }, {
+                    // Step 1: Continue to wall at full speed
                     "margin-left": "-=" + distance
                 }, {
-                    "height": "+=" + (stretch * 3),
-                    "width": "-=" + (stretch * 3),
+                    // Step 2: Hit wall and squash (wrong color bounce)
+                    "height": "+=" + (stretch * 3),   // Expand vertically
+                    "width": "-=" + (stretch * 3),    // Compress horizontally
                     "margin-top": "-=" + stretch
                 }, {
+                    // Step 3: Return to center (correct color)
                     "height": "+=" + (stretch),
                     "width": "-=" + (stretch),
                     "margin-left": "-=" + (stretch * 3),
@@ -375,7 +389,7 @@ function animBall(dir) {
                 }];
             break;
         }
-        case "t":
+        case "t": // TOP - Swipe up
         {
             if(ballColor !== colors[0]){
                 lastStep = 2;
@@ -383,22 +397,26 @@ function animBall(dir) {
                 isCorrectMatch = true;
             }
             animobject = [{
+                    // Step 0: Start moving up + vertical stretch (oval shape)
                     "margin-top": "-=" + distance,
-                    "height": "+=" + stretch,
-                    "width": "-=" + stretch
+                    "height": "+=" + stretch,         // Taller vertically
+                    "width": "-=" + stretch           // Thinner horizontally
                 }, {
+                    // Step 1: Continue to wall at full speed
                     "margin-top": "-=" + distance
                 }, {
-                    "height": "-=" + (stretch * 3),
-                    "width": "+=" + (stretch * 3)
+                    // Step 2: Hit wall and squash (wrong color bounce)
+                    "height": "-=" + (stretch * 3),   // Compress vertically
+                    "width": "+=" + (stretch * 3)     // Expand horizontally
                 }, {
+                    // Step 3: Return to center (correct color)
                     "margin-top": "-=" + (stretch * 3),
                     "height": "-=" + (stretch),
                     "width": "+=" + (stretch)
                 }];
             break;
         }
-        case "r":
+        case "r": // RIGHT - Swipe right
         {
             if(ballColor !== colors[1]){
                 lastStep = 2;
@@ -406,18 +424,22 @@ function animBall(dir) {
                 isCorrectMatch = true;
             }
             animobject = [{
+                    // Step 0: Start moving right + horizontal stretch (oval shape)
                     "margin-left": "+=" + distance,
-                    "height": "-=" + stretch,
-                    "width": "+=" + stretch,
-                    "margin-top": "+=" + Math.floor(stretch / 2)
+                    "height": "-=" + stretch,         // Thinner vertically
+                    "width": "+=" + stretch,          // Wider horizontally
+                    "margin-top": "+=" + Math.floor(stretch / 2)  // Keep centered
                 }, {
+                    // Step 1: Continue to wall at full speed
                     "margin-left": "+=" + distance
                 }, {
+                    // Step 2: Hit wall and squash (wrong color bounce)
                     "margin-left": "+=" + (stretch * 2),
-                    "height": "+=" + (stretch * 3),
-                    "width": "-=" + (stretch * 3),
+                    "height": "+=" + (stretch * 3),   // Expand vertically
+                    "width": "-=" + (stretch * 3),    // Compress horizontally
                     "margin-top": "-=" + stretch
                 }, {
+                    // Step 3: Return to center (correct color)
                     "margin-left": "+=" + (stretch * 3),
                     "height": "+=" + (stretch),
                     "width": "-=" + (stretch),
@@ -425,7 +447,7 @@ function animBall(dir) {
                 }];
             break;
         }
-        case "b":
+        case "b": // BOTTOM - Swipe down
         {
             if(ballColor !== colors[2]){
                 lastStep = 2;
@@ -433,16 +455,20 @@ function animBall(dir) {
                 isCorrectMatch = true;
             }
             animobject = [{
+                    // Step 0: Start moving down + vertical stretch (oval shape)
                     "margin-top": "+=" + distance,
-                    "height": "+=" + stretch,
-                    "width": "-=" + stretch
+                    "height": "+=" + stretch,         // Taller vertically
+                    "width": "-=" + stretch           // Thinner horizontally
                 }, {
+                    // Step 1: Continue to wall at full speed
                     "margin-top": "+=" + distance
                 }, {
+                    // Step 2: Hit wall and squash (wrong color bounce)
                     "margin-top": "+=" + (stretch * 2),
-                    "height": "-=" + (stretch * 3),
-                    "width": "+=" + (stretch * 3)
+                    "height": "-=" + (stretch * 3),   // Compress vertically
+                    "width": "+=" + (stretch * 3)     // Expand horizontally
                 },{
+                    // Step 3: Return to center (correct color)
                     "margin-top": "+=" + (stretch * 3),
                     "height": "-=" + (stretch),
                     "width": "+=" + (stretch)
