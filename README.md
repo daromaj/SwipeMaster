@@ -30,7 +30,9 @@ SwipeMaster is a simple yet engaging mobile-first game that tests your reflexes 
 
 ## Demo
 
-Simply open `index.html` in your browser or deploy to any web server.
+**Play now:** https://daromaj.github.io/SwipeMaster/
+
+Or run locally by opening `index.html` in your browser or deploying to any web server.
 
 ### Quick Start
 

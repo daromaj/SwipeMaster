@@ -20,9 +20,50 @@ var boardSize = Math.floor(Math.min(screenHeight, screenWidth) / 3);
 var borderWidth = 30;
 var colors = ["#00ffff", "#ff00ff", "#ffff00", "#00ff00"]; // Neon cyan, magenta, yellow, green
 var blockEvents = false;
+var instructionsShown = false;
+
+// Device detection function
+function isMobileOrTablet() {
+    // Check for touch support and screen size
+    var hasTouchScreen = ('ontouchstart' in window) ||
+                        (navigator.maxTouchPoints > 0) ||
+                        (navigator.msMaxTouchPoints > 0);
+    var isMobileScreen = window.matchMedia("(max-width: 1024px)").matches;
+
+    // Also check user agent for mobile/tablet devices
+    var userAgent = navigator.userAgent.toLowerCase();
+    var isMobileUA = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile|tablet/i.test(userAgent);
+
+    return (hasTouchScreen && isMobileScreen) || isMobileUA;
+}
+
+// Show instructions based on device type
+function showInstructions() {
+    if (instructionsShown) return;
+
+    var $instructions = $('#instructions');
+    var isMobile = isMobileOrTablet();
+
+    if (isMobile) {
+        $instructions.text('Mobile/Tablet: Swipe in any direction (up, down, left, right)');
+    } else {
+        $instructions.text('Desktop: Use arrow keys (↑ ↓ ← →)');
+    }
+
+    $instructions.removeClass('hidden');
+    instructionsShown = true;
+}
+
+// Hide instructions
+function hideInstructions() {
+    $('#instructions').fadeOut(300, function() {
+        $(this).addClass('hidden').show();
+    });
+}
 
 $(function () {
     screenSetup();
+    showInstructions(); // Show instructions at the very start
     startCountdown();
 
     // Add resize handler for responsive behavior
@@ -89,6 +130,8 @@ function startCountdown() {
             setTimeout(function() {
                 $('#countdown-number').css('animation', 'countdown-pulse 1s ease-in-out');
             }, 10);
+            // Hide instructions when GO! appears
+            hideInstructions();
         } else {
             clearInterval(countdownInterval);
             $('#countdown-overlay').fadeOut(300, function() {
@@ -192,14 +235,16 @@ function restartGame() {
     gameState.gameStarted = false;
     gameState.animationInProgress = false;
     blockEvents = false;
+    instructionsShown = false;
 
     // Clear any existing timers
     if (gameState.timerInterval) {
         clearInterval(gameState.timerInterval);
     }
 
-    // Hide game over screen
+    // Hide game over screen and instructions
     $('#game-over').fadeOut(300);
+    $('#instructions').addClass('hidden');
 
     // Reset ball and board
     resetBall();
@@ -213,6 +258,7 @@ function restartGame() {
     // Start countdown again
     setTimeout(function() {
         $('#countdown-overlay').show();
+        showInstructions(); // Show instructions again for restart
         startCountdown();
     }, 500);
 }
