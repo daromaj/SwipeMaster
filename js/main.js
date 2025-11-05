@@ -52,11 +52,6 @@ function showInstructions() {
 
     $instructions.removeClass('hidden');
     instructionsShown = true;
-
-    // Hide instructions after 5 seconds
-    setTimeout(function() {
-        hideInstructions();
-    }, 5000);
 }
 
 // Hide instructions
@@ -68,6 +63,7 @@ function hideInstructions() {
 
 $(function () {
     screenSetup();
+    showInstructions(); // Show instructions at the very start
     startCountdown();
 
     // Add resize handler for responsive behavior
@@ -134,6 +130,8 @@ function startCountdown() {
             setTimeout(function() {
                 $('#countdown-number').css('animation', 'countdown-pulse 1s ease-in-out');
             }, 10);
+            // Hide instructions when GO! appears
+            hideInstructions();
         } else {
             clearInterval(countdownInterval);
             $('#countdown-overlay').fadeOut(300, function() {
@@ -151,7 +149,6 @@ function startGame() {
     updateScore();
     updateLives();
     $('#timer-display').removeClass('hidden');
-    showInstructions(); // Show device-specific instructions
     startTimer();
 }
 
@@ -261,6 +258,7 @@ function restartGame() {
     // Start countdown again
     setTimeout(function() {
         $('#countdown-overlay').show();
+        showInstructions(); // Show instructions again for restart
         startCountdown();
     }, 500);
 }
@@ -335,11 +333,6 @@ function rgbToHex(rgb) {
 
 function animBall(dir) {
     if (!gameState.gameStarted) return;
-
-    // Hide instructions on first interaction
-    if (instructionsShown && !$('#instructions').hasClass('hidden')) {
-        hideInstructions();
-    }
 
     blockEvents = true;
     gameState.animationInProgress = true;
