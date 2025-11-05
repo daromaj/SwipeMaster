@@ -110,9 +110,9 @@ textarea {
 
 .mainwrapper{
     width: 100%;
-    height: 100%;
+    height: calc(100% - 80px);
     position: fixed;
-    top: 0;
+    top: 80px;
     left: 0;
     display: flex;
     align-items: center;
@@ -181,28 +181,51 @@ textarea {
     transition: all 0.3s ease;
 }
 
-/* Game Stats */
-.game-stats {
-    position: absolute;
-    top: 20px;
+/* Game Header */
+.game-header {
+    position: fixed;
+    top: 0;
     left: 0;
     right: 0;
+    background: linear-gradient(180deg, rgba(10, 10, 15, 0.95) 0%, rgba(10, 10, 15, 0.8) 100%);
+    border-bottom: 2px solid #00ffff;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3), 0 4px 10px rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    backdrop-filter: blur(10px);
+}
+
+.header-content {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.score-container, .lives-container, .timer-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     color: #00ffff;
     font-family: 'Arial', sans-serif;
     font-size: 24px;
     font-weight: bold;
-    z-index: 100;
-    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff, 0 0 40px #00ffff;
-    transition: all 0.3s ease;
+    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+    transition: transform 0.3s ease;
+    flex: 1;
 }
 
-.score-container, .lives-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: transform 0.3s ease;
+.score-container {
+    justify-content: flex-start;
+}
+
+.timer-container {
+    justify-content: center;
+}
+
+.lives-container {
+    justify-content: flex-end;
 }
 
 .score-container:hover, .lives-container:hover {
@@ -259,19 +282,16 @@ textarea {
 
 /* Timer Display */
 .timer-display {
-    position: absolute;
-    top: 70px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80%;
-    max-width: 300px;
-    z-index: 100;
-    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    min-width: 200px;
 }
 
 .timer-bar-container {
     width: 100%;
-    height: 20px;
+    height: 15px;
     background-color: rgba(0, 0, 0, 0.6);
     border-radius: 10px;
     overflow: hidden;
@@ -292,9 +312,8 @@ textarea {
     text-align: center;
     color: #00ffff;
     font-family: 'Arial', sans-serif;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
-    margin-top: 5px;
     text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
     transition: all 0.3s ease;
 }
