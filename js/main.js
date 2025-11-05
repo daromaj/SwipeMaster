@@ -343,15 +343,22 @@ function animBall(dir) {
     var prop = 4;
     var stretch = Math.floor(ballSize / prop);
 
-    // Calculate distance dynamically based on actual rendered container size
-    // This ensures the ball travels correctly on any screen size
-    var $container = $(".gameboard.no-border");
-    var containerWidth = $container.width();
-    var containerHeight = $container.height();
+    // FIXED: Calculate distance to travel from center to wall
+    // Geometry:
+    // - Container inner width = boardSize * 2 (set in screenSetup())
+    // - Ball starts at center = boardSize pixels from each edge
+    // - Ball radius = 20px (ballSize / 2)
+    // - Ball edge should touch inner edge of container
+    // - So ball center needs to travel: boardSize - (ballSize/2) pixels
+    // - Animation has 2 steps, so each step = (boardSize - ballSize/2) / 2
+    var distance = Math.floor((boardSize - (ballSize / 2)) / 2);
 
-    // Distance from center to wall edge, accounting for ball radius
-    // Divided by 2 because animation has two movement steps
-    var distance = Math.floor((containerWidth - ballSize) / 4);
+    console.log("=== BALL DEBUG ===");
+    console.log("boardSize:", boardSize, "| Container size:", boardSize * 2);
+    console.log("ballSize:", ballSize, "| Ball radius:", ballSize / 2);
+    console.log("Distance per step:", distance, "| Total travel:", distance * 2);
+    console.log("Target travel:", boardSize - (ballSize / 2));
+    console.log("==================");
 
     var duration = 150; // Fast, snappy animation for rapid gameplay
     var lastStep = 3;
