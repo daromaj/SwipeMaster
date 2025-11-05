@@ -390,6 +390,38 @@ textarea {
     box-shadow: 0 0 15px #00ffff, 0 0 30px rgba(0, 255, 255, 0.5);
 }
 
+/* Instructions */
+.instructions {
+    text-align: center;
+    color: #ffff00;
+    font-family: 'Arial', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 12px;
+    text-shadow: 0 0 8px #ffff00, 0 0 15px #ffff00;
+    animation: instructions-fade-in 0.5s ease-in-out;
+    margin-top: 4px;
+}
+
+@keyframes instructions-fade-in {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile-specific styles for instructions */
+@media only screen and (max-width: 600px) {
+    .instructions {
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+}
+
 
 /* ==========================================================================
    Helper classes
