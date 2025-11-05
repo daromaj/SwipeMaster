@@ -297,7 +297,7 @@ function animBall(dir) {
     var prop = 4;
     var stretch = Math.floor(ballSize / prop);
     var distance = Math.floor(boardSize / 2) - stretch;
-    var duration = 400; // Increased from 200 to 400 for better visibility
+    var duration = 150; // Fast, snappy animation for rapid gameplay
     var lastStep = 3;
     var ballColor = rgbToHex($(".ball").css("background-color"));
     var isCorrectMatch = false;
@@ -427,7 +427,7 @@ function animBall(dir) {
             if (gameState.gameStarted && gameState.lives > 0) {
                 startTimer();
             }
-        }, 150); // 150ms delay to show ball at wall
+        }, 50); // Quick delay for snappy gameplay
     });
 }
 
